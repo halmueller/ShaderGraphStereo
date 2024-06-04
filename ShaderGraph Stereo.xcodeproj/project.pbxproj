@@ -38,6 +38,7 @@
 		2B42AF8F2C0EE010000EAC51 /* ImageViewer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageViewer.swift; sourceTree = "<group>"; };
 		2B42AFB52C0FB43B000EAC51 /* SG Stereo simple.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "SG Stereo simple.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2B42AFB72C0FB485000EAC51 /* StereoView_simple.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StereoView_simple.swift; sourceTree = "<group>"; };
+		2B42AFB92C0FC96C000EAC51 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -63,6 +64,7 @@
 		2B42AF682C0ED88E000EAC51 = {
 			isa = PBXGroup;
 			children = (
+				2B42AFB92C0FC96C000EAC51 /* README.md */,
 				2B42AF732C0ED88E000EAC51 /* ShaderGraph Stereo */,
 				2B42AF742C0ED88E000EAC51 /* Packages */,
 				2B42AF722C0ED88E000EAC51 /* Products */,

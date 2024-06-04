@@ -49,8 +49,6 @@ struct StereoView: View {
 extension StereoView {
     func updateStereo(content: RealityViewContent) {
         do {
-            // Each pass through this closure leaks memory. Don't do it if we don't have to. This function is called for every
-            // Window resize event. Don't reload the textures if it's the same one as last time.
             if var stereoMaterial {
                 let leftTexture = try TextureResource.load(named: imagePair.leftImageName)
                 try stereoMaterial.setParameter(name: "LeftImage", value: .textureResource(leftTexture))
@@ -75,11 +73,9 @@ extension StereoView {
                 if let imagePlane = content.entities.first as? ModelEntity {
                     // !!!: Replacing the materials array leaks memory. It leaks more on device.
                     imagePlane.model?.materials = [stereoMaterial]
-                    imagePlane.name = imagePair.id
                 } else {
                     // FIXME: we keep this Plane Entity around for duration of the View, without resizing, even if images vary in size.
                     let newPlane = ModelEntity(mesh: .generatePlane(width: planeWidth, height: planeHeight))
-                    newPlane.name = imagePair.id
                     newPlane.model?.materials = [stereoMaterial]
                     // TODO: try adjusting the transform to match image aspect.
                     // Z value of 0 produces terrible Z fighting
