@@ -1,0 +1,118 @@
+#usda 1.0
+(
+    defaultPrim = "Root"
+    metersPerUnit = 1
+    upAxis = "Y"
+)
+
+def Xform "Root"
+{
+    reorder nameChildren = ["Material", "StereoImage", "Screen"]
+    rel material:binding = None (
+        bindMaterialAs = "weakerThanDescendants"
+    )
+
+    def Material "StereoImage"
+    {
+        asset inputs:LeftImage = @@ (
+            customData = {
+                dictionary realitykit = {
+                    float2 positionInSubgraph = (-709.68964, 107.99246)
+                    float2 sizeInSubgraph = (130.5, 53)
+                    int stackingOrderInSubgraph = 500
+                }
+            }
+        )
+        asset inputs:RightImage = @@ (
+            customData = {
+                dictionary realitykit = {
+                    float2 positionInSubgraph = (-702.191, 218.63535)
+                    float2 sizeInSubgraph = (139, 53)
+                    int stackingOrderInSubgraph = 498
+                }
+            }
+        )
+        token outputs:mtlx:surface.connect = </Root/StereoImage/PreviewSurface.outputs:out>
+        token outputs:realitykit:vertex
+        token outputs:surface.connect = </Root/TestStereo/UsdPreviewSurface.outputs:surface>
+        float2 ui:nodegraph:node:pos = (0, 0)
+        string[] ui:nodegraph:realitykit:node:attributesShowingChildren = []
+        float2 ui:nodegraph:realitykit:subgraphOutputs:pos = (299.25, 99.5)
+        float2 ui:nodegraph:realitykit:subgraphOutputs:size = (181.5, 99)
+        int ui:nodegraph:realitykit:subgraphOutputs:stackingOrder = 491
+
+        def Shader "PreviewSurface" (
+            active = true
+        )
+        {
+            uniform token info:id = "ND_UsdPreviewSurface_surfaceshader"
+            color3f inputs:diffuseColor.connect = </Root/StereoImage/Combine.outputs:out>
+            float inputs:ior = 1.5
+            float inputs:metallic
+            float3 inputs:normal
+            float inputs:occlusion = 1
+            float inputs:opacity
+            float inputs:roughness
+            token outputs:out
+            float2 ui:nodegraph:node:pos = (74.25, 99.5)
+            float2 ui:nodegraph:node:size = (148.5, 199)
+            int ui:nodegraph:node:stackingOrder = 491
+        }
+
+        def Shader "Right"
+        {
+            uniform token info:id = "ND_image_color3"
+            color3f inputs:default
+            asset inputs:file = @right.png@
+            asset inputs:file.connect = </Root/StereoImage.inputs:RightImage>
+            string inputs:filtertype
+            float2 inputs:texcoord
+            string inputs:uaddressmode
+            string inputs:vaddressmode
+            color3f outputs:out
+            float2 ui:nodegraph:node:pos = (-416.92188, 292.35547)
+            float2 ui:nodegraph:node:size = (148.5, 199)
+            int ui:nodegraph:node:stackingOrder = 491
+            string[] ui:nodegraph:realitykit:node:attributesShowingChildren = ["outputs:out", "outputs:out"]
+        }
+
+        def Shader "UsdPreviewSurface" (
+            active = false
+        )
+        {
+            uniform token info:id = "UsdPreviewSurface"
+            token outputs:surface
+        }
+
+        def Shader "Combine"
+        {
+            uniform token info:id = "ND_realitykit_geometry_switch_cameraindex_color3"
+            color3f inputs:left.connect = </Root/StereoImage/Left.outputs:out>
+            color3f inputs:mono.connect = </Root/StereoImage/Right.outputs:out>
+            color3f inputs:right.connect = </Root/StereoImage/Right.outputs:out>
+            color3f outputs:out
+            float2 ui:nodegraph:node:pos = (-168.91406, 274.5039)
+            float2 ui:nodegraph:node:size = (208, 145)
+            int ui:nodegraph:node:stackingOrder = 491
+            string[] ui:nodegraph:realitykit:node:attributesShowingChildren = ["outputs:out"]
+        }
+
+        def Shader "Left"
+        {
+            uniform token info:id = "ND_image_color3"
+            color3f inputs:default
+            asset inputs:file = @left.png@
+            asset inputs:file.connect = </Root/StereoImage.inputs:LeftImage>
+            string inputs:filtertype
+            float2 inputs:texcoord
+            string inputs:uaddressmode
+            string inputs:vaddressmode
+            color3f outputs:out
+            float2 ui:nodegraph:node:pos = (-441.17426, 1.3646282)
+            float2 ui:nodegraph:node:size = (148.5, 199)
+            int ui:nodegraph:node:stackingOrder = 501
+            string[] ui:nodegraph:realitykit:node:attributesShowingChildren = ["inputs:file", "inputs:filtertype"]
+        }
+    }
+}
+
