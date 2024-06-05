@@ -6,16 +6,16 @@ The shader graph is pretty straightforward. Two named `ImageFile` nodes ("LeftIm
 
 ![Shadergraph](shadergraph.png)
 
-The images are loaded in the `update:` closure of a `RealityView`. If you are updating a `RealityView`, you have some opportunities to write spectacular memory leaks. There are two versions of `StereoView`, which actually displays the 3D image. `StereoView_simple` is a direct approach. `StereoView_revised` has some optimizations. They are used respectively in the "SG Stereo simple" and "SG Stereo revised" targets and schemes. A 2D mesh `Entity` is used to display the stereo image.
+If you are updating a `RealityView`, you have some opportunities to write spectacular memory leaks. This repo contains two versions of the `StereoView` View, which is what actually displays the 3D image. `StereoView_simple` is a direct approach. `StereoView_revised` has some optimizations. They are used respectively in the "SG Stereo simple" and "SG Stereo revised" targets and schemes. A 2D mesh `Entity` is used to display the stereo image. `StereoView_simple` leaks like a sieve. `StereoView_revised` leaks a little bit.
 
 You must load your image in the `RealityView`'s `make:` closure. You're not guaranteed to ever get a call to the `update:` closure. But if you change the image in a loaded `RealityView`, you _will_ get a call to your `update:` closure. However, the `update:` closure is called for every SwiftUI state change, not just image reloading. To solve this, I've put the logic to load an image pair into a separate function that's called from both the `make:` and the `update:` closures.
 
-Build and run the app, and look at the Memory usage plot in Xcode or the Memory Instruments. In `StereoView_simple`, we load the images on every `update:` call, build a new `Material`, and update the image plane's `Material`. There's some sort of memory leak or hoarding when the material is updated. You can go from 55 megabytes of memory usage to a couple of gigabytes simply by resizing the window. In a prior version, I was rebuilding the mesh on every `update:`, and that was even more ridiculous.
+Build and run the app, and look at the Memory usage plot in Xcode or the Memory Instruments. In `StereoView_simple`, we reload the left/right images on every `update:` call, build a new `Material`, and update the image plane's `Material`. There's some sort of memory leak or hoarding when the material is updated. You can go from 55 megabytes of memory usage to a couple of gigabytes simply by resizing the window. In a prior version, I was rebuilding the mesh on every `update:`, and that was even more ridiculous.
 
 ![Screenshot](screenshot.png)
 
-In `StereoView_revised`, we set the image plane's name to be the stereo pair's `id`, and then check to see if the image we're loading is the same one we've loaded. This vastly reduces the memory leakage, because now we're only leaking when we change images. Apple FB 13817928.
+In `StereoView_revised`, we set the image plane's name to be the stereo pair's `id`, and then check to see if the image we're loading is the same one we've loaded. This vastly reduces the memory leakage, because now we're only leaking when we change images. I'm not thrilled about writing state to the RealityView entity this way, but it works. Apple FB 13817928 for the smaller leakage.
 
-The 3D image is a fixed size, because a mesh Entity's size is specified in meters. A nice enhancement would be to resize the image plane when the window is resized, using either a new Entity, or the Entity's' transform.
+The plane that shows the 3D image is a fixed size, because a mesh Entity's size is specified in meters. A nice enhancement would be to resize the image plane when the window is resized, using either a new Entity, or the Entity's' transform.
 
 Stereo pairs courtesy of [Middlebury College](https://vision.middlebury.edu/stereo/data/scenes2021/).
