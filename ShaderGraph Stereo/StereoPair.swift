@@ -30,4 +30,5 @@ struct StereoPair: Codable, Identifiable {
     static let artRoom = StereoPair(id: "Art Room", leftImageName: "artroom2im0", rightImageName: "artroom2im1", comment: "Art room")
     static let chess = StereoPair(id: "Chess", leftImageName: "chess2im0", rightImageName: "chess2im1", comment: "Chess")
     static let curule = StereoPair(id: "Curule", leftImageName: "curule1im0", rightImageName: "curule1im1", comment: "Curule")
+    static let nasaAmes = StereoPair(id: "Ames", leftImageName: "amesLeft", rightImageName: "amesRight", comment: "NASA Ames Stereo Pipeline synthetic image")
 }

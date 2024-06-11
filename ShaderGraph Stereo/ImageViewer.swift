@@ -18,6 +18,8 @@ struct ImageViewer: View {
                     selectedPair = .chess
                 } else if selectedPair == .chess {
                     selectedPair = .curule
+                } else if selectedPair == .curule {
+                    selectedPair = .nasaAmes
                 } else {
                     selectedPair = .artRoom
                 }
