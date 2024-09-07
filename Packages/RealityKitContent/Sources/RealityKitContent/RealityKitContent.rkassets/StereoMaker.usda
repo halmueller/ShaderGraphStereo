@@ -32,7 +32,7 @@ def Xform "Root"
                 }
             }
         )
-        token outputs:mtlx:surface.connect = </Root/StereoImage/PreviewSurface.outputs:out>
+        token outputs:mtlx:surface.connect = </Root/StereoImage/UnlitSurface.outputs:out>
         token outputs:realitykit:vertex
         token outputs:surface.connect = </Root/TestStereo/UsdPreviewSurface.outputs:surface>
         float2 ui:nodegraph:node:pos = (0, 0)
@@ -40,24 +40,6 @@ def Xform "Root"
         float2 ui:nodegraph:realitykit:subgraphOutputs:pos = (299.25, 99.5)
         float2 ui:nodegraph:realitykit:subgraphOutputs:size = (181.5, 99)
         int ui:nodegraph:realitykit:subgraphOutputs:stackingOrder = 491
-
-        def Shader "PreviewSurface" (
-            active = true
-        )
-        {
-            uniform token info:id = "ND_UsdPreviewSurface_surfaceshader"
-            color3f inputs:diffuseColor.connect = </Root/StereoImage/Combine.outputs:out>
-            float inputs:ior = 1.5
-            float inputs:metallic
-            float3 inputs:normal
-            float inputs:occlusion = 1
-            float inputs:opacity
-            float inputs:roughness
-            token outputs:out
-            float2 ui:nodegraph:node:pos = (74.25, 99.5)
-            float2 ui:nodegraph:node:size = (148.5, 199)
-            int ui:nodegraph:node:stackingOrder = 491
-        }
 
         def Shader "Right"
         {
@@ -112,6 +94,19 @@ def Xform "Root"
             float2 ui:nodegraph:node:size = (148.5, 199)
             int ui:nodegraph:node:stackingOrder = 501
             string[] ui:nodegraph:realitykit:node:attributesShowingChildren = ["inputs:file", "inputs:filtertype"]
+        }
+
+        def Shader "UnlitSurface"
+        {
+            uniform token info:id = "ND_realitykit_unlit_surfaceshader"
+            bool inputs:applyPostProcessToneMap = 0
+            color3f inputs:color.connect = </Root/StereoImage/Combine.outputs:out>
+            bool inputs:hasPremultipliedAlpha
+            float inputs:opacity
+            float inputs:opacityThreshold
+            token outputs:out
+            float2 ui:nodegraph:node:pos = (67.82706, 100.63739)
+            int ui:nodegraph:node:stackingOrder = 509
         }
     }
 }

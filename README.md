@@ -2,7 +2,7 @@
 
 This sample project shows my current approach to displaying stereographic image pairs in visionOS. There are a few hiccups.
 
-The shader graph is pretty straightforward. Two named `ImageFile` nodes ("LeftImage" and "RightImage") accept the names of the left and right images, feed to a pair of `Image` nodes, which then feed a `CameraIndexSwitch`. I feed the right image to the "Mono" input, because in the images I'm working with I'll occasionally see a missing left image. This pipeline then feeds a named output "StereoImage". As of visionOS 1.1, `TextureResource.load` fails with pure grayscale images, so you will have to convert them to an RGB-based color space (Apple FB 13733823). Size limit is 8192x8192 pixels.
+The shader graph is pretty straightforward. Two named `ImageFile` nodes ("LeftImage" and "RightImage") accept the names of the left and right images, feed to a pair of `Image` nodes, which then feed a `CameraIndexSwitch`. I feed the right image to the "Mono" input, because in the images I'm working with I'll occasionally see a missing left image. This pipeline then feeds a named output "StereoImage". As of visionOS 1.1, and still in Xcode 16b6's visionOS 2.0 SDK, `TextureResource.load` fails with pure grayscale images, so you will have to convert them to an RGB-based color space (Apple FB 13733823). Size limit is 8192x8192 pixels.
 
 ![Shadergraph](shadergraph.png)
 
@@ -16,6 +16,6 @@ Build and run the app, and look at the Memory usage plot in Xcode or the Memory 
 
 In `StereoView_revised`, we set the image plane's name to be the stereo pair's `id`, and then check to see if the image we're loading is the same one we've loaded. This vastly reduces the memory leakage, because now we're only leaking when we change images. I'm not thrilled about writing state to the RealityView entity this way, but it works. Apple FB 13817928 for the smaller leakage.
 
-The plane that shows the 3D image is a fixed size, because a mesh Entity's size is specified in meters. A nice enhancement would be to resize the image plane when the window is resized, using either a new Entity, or the Entity's' transform.
+The plane that shows the 3D image is a fixed size, because a mesh Entity's size is specified in meters. A nice enhancement would be to resize the image plane when the window is resized, using either a new Entity, or the Entity's' transform. That's why the Ames Stereo Pipeline sample's aspect ratio is wrong.
 
-Stereo pairs courtesy of [Middlebury College](https://vision.middlebury.edu/stereo/data/scenes2021/).
+Stereo pairs courtesy of [Middlebury College](https://vision.middlebury.edu/stereo/data/scenes2021/) and Nasa Ames Stereo Pipeline (https://github.com/NeoGeographyToolkit/StereoPipeline/).
