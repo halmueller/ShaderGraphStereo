@@ -106,7 +106,8 @@ def Xform "Root"
             float inputs:opacityThreshold
             token outputs:out
             float2 ui:nodegraph:node:pos = (67.82706, 100.63739)
-            int ui:nodegraph:node:stackingOrder = 509
+            int ui:nodegraph:node:stackingOrder = 510
+            string[] ui:nodegraph:realitykit:node:attributesShowingChildren = ["inputs:hasPremultipliedAlpha"]
         }
     }
 }
