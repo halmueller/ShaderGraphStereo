@@ -6,7 +6,7 @@
 
 import Foundation
 
-struct StereoPair: Codable, Identifiable {
+struct StereoPair: Codable, Identifiable, Equatable {
     let id: String
     let leftImageName: String
     let rightImageName: String
